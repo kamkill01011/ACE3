@@ -30,7 +30,14 @@ if (isNull (uiNamespace getVariable [QGVAR(display), displayNull])) then {
 };
 
 private _ctrlGroup = (uiNamespace getVariable [QGVAR(display), displayNull]) displayCtrl 1000;
-if (cameraView != "GUNNER") exitWith { // need to be in gunner mode, so we can check where the optics are aiming at
+
+private _vehicleCfg = configFile >> "CfgVehicles" >> (typeOf _vehicle);
+private _force = if (isNumber (_vehicleCfg >> "KAM_force_artillery")) then {
+    getNumber (_vehicleCfg >> "KAM_force_artillery") == 1;
+} else {
+    false;
+};
+if ((cameraView != "GUNNER") && (!_force)) exitWith { // need to be in gunner mode, so we can check where the optics are aiming at
     _ctrlGroup ctrlShow false;
 };
 _ctrlGroup ctrlShow true;
