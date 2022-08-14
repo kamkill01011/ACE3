@@ -87,3 +87,42 @@ _action = [QGVAR(Disconnect),
     [0, 0, 0],
     REFUEL_ACTION_DISTANCE] call EFUNC(interact_menu,createAction);
 [_target, 0, ["ACE_MainActions", QGVAR(Refuel)], _action] call EFUNC(interact_menu,addActionToObject);
+
+// Add check fuel
+_action = ["KAM_CheckFuel",
+    "Check Fuel",
+    QPATHTOF(ui\icon_refuel_interact.paa),
+    {
+		private _fuel = [_target] call FUNC(getFuel);
+		if (_fuel <= 0) exitWith {
+			("Empty") remoteExec ["hint", _player];
+		};
+		if (_fuel < 2) exitWith {
+			("0-2 L") remoteExec ["hint", _player];
+		};
+		if (_fuel < 4) exitWith {
+			("2-4 L") remoteExec ["hint", _player];
+		};
+		if (_fuel < 8) exitWith {
+			("4-8 L") remoteExec ["hint", _player];
+		};
+		if (_fuel < 16) exitWith {
+			("8-16 L") remoteExec ["hint", _player];
+		};
+		if (_fuel < 32) exitWith {
+			("16-32 L") remoteExec ["hint", _player];
+		};
+		if (_fuel < 64) exitWith {
+			("32-64 L") remoteExec ["hint", _player];
+		};
+		if (_fuel < 100) exitWith {
+			("64-100 L") remoteExec ["hint", _player];
+		};
+		("100L or more") remoteExec ["hint", _player];
+	},
+    {[_player, _target] call FUNC(canCheckFuel)},
+    {},
+    [],
+    [0, 0, 0],
+    REFUEL_ACTION_DISTANCE] call EFUNC(interact_menu,createAction);
+[_target, 0, ["ACE_MainActions", QGVAR(Refuel)], _action] call EFUNC(interact_menu,addActionToObject);

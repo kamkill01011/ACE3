@@ -14,8 +14,10 @@ class Cfg3DEN {
                         tooltip = CSTRING(fuelCargo_edenDesc);
                         property = QGVAR(fuelCargo);
                         control = "EditShort";
-                        expression = QUOTE(if (_value != DEFAULT_FUELCARGO) then {[ARR_2(_this,_value)] call DFUNC(makeSource)});
-                        defaultValue = QUOTE(DEFAULT_FUELCARGO);
+                        //expression = QUOTE(if (_value != DEFAULT_FUELCARGO) then {[ARR_2(_this,_value)] call DFUNC(makeSource)});
+						expression = "if (_value != (if (isNumber (configOf _this >> ""ace_refuel_fuelCargo"")) then {getNumber (configOf _this >> ""ace_refuel_fuelCargo"")} else {-1})) then {[_this, _value] call ace_refuel_fnc_makeSource}";
+                        //defaultValue = QUOTE(DEFAULT_FUELCARGO);
+						defaultValue = "(if (isNumber (configOf _this >> ""ace_refuel_fuelCargo"")) then {getNumber (configOf _this >> ""ace_refuel_fuelCargo"")} else {-1})";
                         validate = "number";
                         condition = "(1-objectBrain)*(1-objectAgent)";
                         typeName = "NUMBER";
@@ -25,8 +27,10 @@ class Cfg3DEN {
                         tooltip = CSTRING(hooks_edenDesc);
                         property = QGVAR(hooks);
                         control = "EditXYZ";
-                        expression = QUOTE(if (_value isNotEqualTo DEFAULT_HOOKS) then {_this setVariable [ARR_3('%s',[_value],true)]});
-                        defaultValue = QUOTE(DEFAULT_HOOKS);
+                        //expression = QUOTE(if (_value isNotEqualTo DEFAULT_HOOKS) then {_this setVariable [ARR_3('%s',[_value],true)]});
+						expression = "if (_value isNotEqualTo (if (isArray (configOf _this >> ""ace_refuel_hooks"")) then {getArray (configOf _this >> ""ace_refuel_hooks"") select 0} else {[0, 0, 0]})) then {_this setVariable ['%s', [_value], true]}";
+                        //defaultValue = QUOTE(DEFAULT_HOOKS);
+						defaultValue = "(if (isArray (configOf _this >> ""ace_refuel_hooks"")) then {getArray (configOf _this >> ""ace_refuel_hooks"") select 0} else {[0, 0, 0]})";
                         condition = "(1-objectBrain)*(1-objectAgent)";
                     };
                 };
