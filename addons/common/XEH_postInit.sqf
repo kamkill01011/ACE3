@@ -145,8 +145,7 @@ if (isServer) then {
                     INFO_3("[%1] DC - Was Zeus [%2] while controlling unit [%3] - manually clearing `bis_fnc_moduleRemoteControl_owner`",[_x] call FUNC(getName),_dcPlayer,_x);
                     _x setVariable ["bis_fnc_moduleRemoteControl_owner", nil, true];
                 };
-                nil
-            } count (curatorEditableObjects  _zeusLogic);
+            } forEach (curatorEditableObjects  _zeusLogic);
         };
     }];
 };
@@ -223,6 +222,9 @@ if (isServer) then {
     [QGVAR(claimSafe), LINKFUNC(claimSafeServer)] call CBA_fnc_addEventHandler;
 };
 
+["CBA_SettingChanged", {
+    ["ace_settingChanged", _this] call CBA_fnc_localEvent;
+}] call CBA_fnc_addEventHandler;
 
 //////////////////////////////////////////////////
 // Set up remote execution
