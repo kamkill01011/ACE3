@@ -15,7 +15,7 @@
  * Public: No
  */
 
-(_this select 0) params ["_vehicle", "_turret", "_fireModes", "_useAltElevation", "_turretAnimBody", "_invalidGunnerMem"];
+(_this select 0) params ["_vehicle", "_turret", "_fireModes", "_useAltElevation", "_turretAnimBody", "_invalidGunnerMem", "_elevationMode"];
 
 if (shownArtilleryComputer && {GVAR(disableArtilleryComputer)}) then {
     // Still Don't like this solution, but it works
@@ -37,6 +37,17 @@ private _force = if (isNumber (_vehicleCfg >> "KAM_force_artillery")) then {
 } else {
     false;
 };
+
+if (_elevationMode == 0) then {
+    // For turrets not using an elevation mode (i.e. mouse controls elevation instead of pageUp/Down)
+    // Show the info 1 step below, so it doesn't block vanilla ranging (discreteDistance)
+    // vanilla zeroing will have a negative effect, so it's best to range as low as possible
+    private _safeZoneGrid = (((safeZoneW / safeZoneH) min 1.2) / 1.2) / 25;
+    private _y = 3.5 * _safeZoneGrid + (profileNamespace getVariable ['IGUI_GRID_WEAPON_Y', safeZoneY + 0.5 * _safeZoneGrid]);
+    _ctrlGroup ctrlSetPositionY _y;
+    _ctrlGroup ctrlCommit 0;
+};
+
 // Need to be in gunner mode, so we can check where the optics are aiming at
 // However, if there are no optics, ignore the above
 if ((!_invalidGunnerMem && {cameraView != "GUNNER"}) && (!_force)) exitWith {
